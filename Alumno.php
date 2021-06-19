@@ -6,7 +6,7 @@
     private $nombreCompleto;
     private $correo;
     private $edad;
-    const TABLA = 'alumno';
+    const TABLA = 'alumnos';
     public function getId() {
         return $this->Id;
      }
@@ -41,5 +41,26 @@
        $this->Edad = $edad;
        $this->Id = $id;
     }
- }
+    public function guardar(){
+        $conexion = new Conexion();
+        if($this->Id) /*Modifica*/ {
+           $consulta = $conexion->prepare('UPDATE ' . self::TABLA .' SET Matricula = :Matricula, NombreCompleto = :NombreCompleto, Correo = :Correo, Edad = :Edad WHERE Id = :Id');
+           $consulta->bindParam(':Matricula', $this->Matricula);
+           $consulta->bindParam(':NombreCompleto', $this->NombreCompleto);
+           $consulta->bindParam(':Correo', $this->Correo);
+           $consulta->bindParam(':Edad', $this->Edad);
+           $consulta->bindParam(':Id', $this->Id);
+           $consulta->execute();
+        }else /*Inserta*/ {
+           $consulta = $conexion->prepare('INSERT INTO ' . self::TABLA .' (Matricula, NombreCompleto, Correo, Edad) VALUES(:Matricula, :NombreCompleto, :Correo, :Edad)');
+           $consulta->bindParam(':Matricula', $this->Matricula);
+           $consulta->bindParam(':NombreCompleto', $this->NombreCompleto);
+           $consulta->bindParam(':Correo', $this->Correo);
+           $consulta->bindParam(':Edad', $this->Edad);
+           $consulta->execute();
+           $this->Id = $conexion->lastInsertId();
+        }
+        $conexion = null;
+     }
+    }
 ?>
