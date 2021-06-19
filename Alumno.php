@@ -61,6 +61,26 @@
            $this->Id = $conexion->lastInsertId();
         }
         $conexion = null;
-     }
     }
+    public static function buscarPorId($id){
+        $conexion = new Conexion();
+        $consulta = $conexion->prepare('SELECT Matricula, NombreCompleto, Correo FROM ' . self::TABLA . ' WHERE Id = :Id');
+        $consulta->bindParam(':Id', $id);
+        $consulta->execute();
+        $registro = $consulta->fetch();
+        if($registro){
+            return new self($registro['Matricula'],$registro['NombreCompleto'], $registro['Correo'], $id);
+        }else{
+           return false;
+        }
+    }
+
+    public static function RecuperarTodos(){
+        $conexion = new Conexion();
+        $consulta = $conexion->prepare('SELECT Id,Matricula, NombreCompleto, Correo, Edad FROM ' . self::TABLA . ' ORDER BY NombreCompleto');
+        $consulta->execute();
+        $registros = $consulta->fetchAll();
+        return $registros;
+     }
+}
 ?>

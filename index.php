@@ -1,3 +1,7 @@
+<?php
+ require_once 'Alumno.php';
+ $alumnos = Alumno::recuperarTodos();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,7 +28,19 @@
             echo "La clase no se ha cargado correctamente";
         die;
         }
-
+    $alumno = Alumno::buscarPorId(1);
+        if($alumno){
+            echo $alumno->getMatricula();
+            echo '<br />';
+            echo $alumno->getNombreCompleto();
+        }else{
+            echo 'El alumno no ha sido encontrado';
+        }
     ?>
+     <ul>
+      <?php foreach($alumnos as $item): ?>
+      <li> <?php echo $item['Matricula'] . ' - ' . $item['NombreCompleto']; ?> </li>
+      <?php endforeach; ?>
+      </ul>
 </body>
 </html>
