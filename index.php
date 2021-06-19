@@ -9,6 +9,9 @@
 <body>
 
     <h1>Lista de alumnos</h1>
-
+    <?php
+    require_once 'clases/Conexion.php';
+    $conexion = new Conexion();
+    ?>
 </body>
 </html>
